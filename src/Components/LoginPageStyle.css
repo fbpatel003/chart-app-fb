@@ -6,7 +6,12 @@
     box-sizing: border-box;
 }
 body{
+    
+}
+.LoginBody{
     background-color: #080710;
+    width: 100vw;
+    height: 100vh;
 }
 .background{
     width: 430px;
