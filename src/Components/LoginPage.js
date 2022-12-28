@@ -10,7 +10,7 @@ function LoginPage() {
     function handleLogin(){
         console.log(LoginId+" "+ps);
 
-        fetch("http://localhost:5000/login",{
+        fetch("https://chart-api-fb.onrender.com/login",{
             method:"POST",
             crossDomain: true,
             headers:{
