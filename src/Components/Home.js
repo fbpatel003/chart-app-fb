@@ -1,17 +1,18 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Button from '@mui/material/Button';
-import List from '@mui/material/List';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import SwipeableDrawer from "@mui/material/SwipeableDrawer";
+import Button from "@mui/material/Button";
+import List from "@mui/material/List";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import { Link } from "react-router-dom";
 
-function Home() {
+function Home(props) {
   const [state, setState] = React.useState({
     left: false,
   });
@@ -19,8 +20,8 @@ function Home() {
   const toggleDrawer = (anchor, open) => (event) => {
     if (
       event &&
-      event.type === 'keydown' &&
-      (event.key === 'Tab' || event.key === 'Shift')
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
     ) {
       return;
     }
@@ -36,7 +37,7 @@ function Home() {
       onKeyDown={toggleDrawer(anchor, false)}
     >
       <List>
-        {['ChartsInFocus', 'Divergence Chart'].map((text, index) => (
+        {["ChartsInFocus", "Divergence Chart"].map((text, index) => (
           <ListItem key={text} disablePadding>
             <ListItemButton>
               <ListItemIcon>
@@ -49,32 +50,44 @@ function Home() {
       </List>
       <Divider />
       <List>
-        {['AUD','CAD','CHF', 'EUR', 'GBP', 'NZD','JPY' ].map((text, index) => (
-          <ListItem key={text} disablePadding>
-            <ListItemButton>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
-          </ListItem>
-        ))}
+        {["AUD", "CAD", "CHF", "EUR", "GBP", "NZD", "JPY"].map(
+          (text, index) => (
+            <Link key={text} to={`/${text}`}>
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>
+                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                  </ListItemIcon>
+                  <ListItemText primary={text} />
+                </ListItemButton>
+              </ListItem>
+            </Link>
+          )
+        )}
       </List>
     </Box>
   );
   return (
     <div>
-        <React.Fragment key={'left'}>
-          <Button onClick={toggleDrawer('left', true)}>{'left'}</Button>
-          <SwipeableDrawer
-            anchor={'left'}
-            open={state['left']}
-            onClose={toggleDrawer('left', false)}
-            onOpen={toggleDrawer('left', true)}
-          >
-            {list('left')}
-          </SwipeableDrawer>
-        </React.Fragment>
+      <React.Fragment key={"left"}>
+        <Button
+          style={{
+            position: "fixed",
+            bottom: "0",
+          }}
+          onClick={toggleDrawer("left", true)}
+        >
+          {props.currencyName}
+        </Button>
+        <SwipeableDrawer
+          anchor={"left"}
+          open={state["left"]}
+          onClose={toggleDrawer("left", false)}
+          onOpen={toggleDrawer("left", true)}
+        >
+          {list("left")}
+        </SwipeableDrawer>
+      </React.Fragment>
     </div>
   );
 }
