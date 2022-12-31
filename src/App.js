@@ -1,4 +1,4 @@
-import { useState , useEffect} from "react";
+import { useState, useEffect, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import ChartBox from "./Components/ChartBox";
 import Home from "./Components/Home";
@@ -74,12 +74,13 @@ function App() {
     "GBPJPY",
     "CHFJPY",
   ];
-  const [timeFrame, setTimeFrame] = useState("60");
+  const [timeFrame, setTimeFrame] = useState(60);
   const [legend, setLegend] = useState(false);
   const [mode, setMode] = useState("dark");
   const [rsi, setRsi] = useState(true);
   const [atr, setAtr] = useState(true);
   const [macd, setMacd] = useState(false);
+  const [toolbar, setToolBar] = useState(false);
 
   useEffect(() => {
     const TF = JSON.parse(localStorage.getItem("TimeFrameOfFxChart"));
@@ -94,6 +95,8 @@ function App() {
     if (ATR) setAtr(ATR);
     const MACD = JSON.parse(localStorage.getItem("MacdFxChart"));
     if (MACD) setMacd(MACD);
+    const TOOLBAR = JSON.parse(localStorage.getItem("ToolBarFxChart"));
+    if (TOOLBAR) setMacd(TOOLBAR);
   }, []);
 
   useEffect(() => {
@@ -114,6 +117,9 @@ function App() {
   useEffect(() => {
     localStorage.setItem("MacdFxChart", JSON.stringify(macd));
   }, [macd]);
+  useEffect(() => {
+    localStorage.setItem("ToolBarFxChart", JSON.stringify(toolbar));
+  }, [toolbar]);
 
   const chartData = {
     TimeFrame: timeFrame,
@@ -122,23 +128,68 @@ function App() {
     Atr: atr,
     Mode: mode,
     hideLegend: legend,
+    ToolBar: toolbar, 
   };
+
+  function handleChartDataChange(change) {
+    if (change == "rsi") setRsi(!rsi);
+    if (change == "macd") setMacd(!macd);
+    if (change == "atr") setAtr(!atr);
+    if (change == "legend") setLegend(!legend);
+    if (change == "mode" && mode=='dark') setMode("light");
+    if (change == "mode" && mode=='light') setMode("dark");
+    if(change=='toolbar') setToolBar(!toolbar);
+  }
+
+  function handleTimeFrameChnage(Time){
+    setTimeFrame(Time);
+    console.log(timeFrame)
+  }
 
   return (
     <>
       <LoginPage handleLoginToApp={handleLogin} />
       <Routes>
         {LogIn ? <Route path="/" element={<Home />} /> : null}
-        {LogIn ? <Route path="/Home" element={<Home />} /> : null}
-        {
-          LogIn ?
-          [{text:"AUD", Array:audArr}, {text:"CAD", Array:cadArr}, {text:"CHF", Array:chfArr}, {text:"EUR", Array:eurArr}, {text:"GBP", Array:gbpArr}, {text:"NZD", Array:nzdArr}, {text:"JPY", Array:jpyArr}].map((Obj, index)=>{
-            return(
-              <Route key={Obj.text} path={`/${Obj.text}`} element={<ChartBox currencyName={Obj.text} AllCharts={Obj.Array} chartData={chartData} />} />
-            )
-          } )
-          : null
-        }
+        {LogIn ? (
+          <Route
+            path="/Home"
+            element={
+              <Home
+                chartData={chartData}
+                handleChartDataChange={handleChartDataChange}
+                handleTimeFrameChnage={handleTimeFrameChnage}
+              />
+            }
+          />
+        ) : null}
+        {LogIn
+          ? [
+              { text: "AUD", Array: audArr },
+              { text: "CAD", Array: cadArr },
+              { text: "CHF", Array: chfArr },
+              { text: "EUR", Array: eurArr },
+              { text: "GBP", Array: gbpArr },
+              { text: "NZD", Array: nzdArr },
+              { text: "JPY", Array: jpyArr },
+            ].map((Obj, index) => {
+              return (
+                <Route
+                  key={chartData}
+                  path={`/${Obj.text}`}
+                  element={
+                    <ChartBox
+                      currencyName={Obj.text}
+                      AllCharts={Obj.Array}
+                      chartData={chartData}
+                      handleChartDataChange={handleChartDataChange}
+                      handleTimeFrameChnage={handleTimeFrameChnage}
+                    />
+                  }
+                />
+              );
+            })
+          : null}
         {/* <Route path="/AUD" element={<ChartBox currencyName="AUD" AllCharts={audArr} chartData={chartData} />} />
         <Route path="/CAD" element={<ChartBox currencyName="CAD" AllCharts={cadArr} chartData={chartData} />} />
         <Route path="/CHF" element={<ChartBox currencyName="CHF" AllCharts={chfArr} chartData={chartData} />} />
