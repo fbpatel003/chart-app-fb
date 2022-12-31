@@ -6,6 +6,7 @@ import Button from "@mui/material/Button";
 import Home from "./Home";
 
 function ChartBox(props) {
+
   return (
     <Box sx={{ flexGrow: 1 }} style={{ padding: "15px" }}>
       <Grid container spacing={2}>
@@ -21,6 +22,7 @@ function ChartBox(props) {
                 }}
               >
                 <TradingViewChart
+                  key={new Date().getMilliseconds()}
                   style={{ padding: "10px" }}
                   chartName={el}
                   chartData={props.chartData}
@@ -63,9 +65,9 @@ function ChartBox(props) {
           );
         })}
       </Grid>
-      <Home currencyName={props.currencyName}/>
+      <Home currencyName={props.currencyName} chartData={props.chartData} handleChartDataChange={props.handleChartDataChange} handleTimeFrameChnage={props.handleTimeFrameChnage}/>
     </Box>
   );
 }
-
+ 
 export default ChartBox;

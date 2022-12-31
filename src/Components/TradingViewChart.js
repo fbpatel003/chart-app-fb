@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 
 function TradingViewChart(props) {
+
+
     const curChartName = "FX:" + props.chartName;
+
+    const curChartId = props.chartName + new Date().getMinutes().toLocaleString();
+    console.log(curChartId);
 
     let curChartDetails = {
         width: "auto",
@@ -18,9 +23,10 @@ function TradingViewChart(props) {
         enable_publishing: false,
         allow_symbol_change: true,
         show_popup_button: true,
+        hide_side_toolbar: props.chartData.ToolBar,
         popup_width: "1000",
         popup_height: "650",
-        container_id: props.chartName,
+        container_id: curChartId,
       }
 
       if(props.chartData.hideLegend) curChartDetails.hide_legend=true;
@@ -54,7 +60,7 @@ function TradingViewChart(props) {
 
     function createWidget() {
       if (
-        document.getElementById(props.chartName) &&
+        document.getElementById(curChartId) &&
         "TradingView" in window
       ) {
         new window.TradingView.widget(curChartDetails);
@@ -64,7 +70,7 @@ function TradingViewChart(props) {
 
   return (
     <div className="tradingview-widget-container">
-      <div id={props.chartName}/>
+      <div id={curChartId}/>
     </div>
   );
 }
