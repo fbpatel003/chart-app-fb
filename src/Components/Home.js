@@ -61,6 +61,7 @@ function Home(props) {
       >
         <List>
           {["ChartsInFocus", "Divergence Chart"].map((text, index) => (
+             <Link style={{color:'grey', textDecoration:'none'}} key={text} to={`/${text}`}>
             <ListItem key={text} disablePadding>
               <ListItemButton>
                 <ListItemIcon>
@@ -69,6 +70,7 @@ function Home(props) {
                 <ListItemText primary={text} />
               </ListItemButton>
             </ListItem>
+            </Link>
           ))}
         </List>
         <Divider />

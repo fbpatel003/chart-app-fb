@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import ChartBox from "./Components/ChartBox";
+import ChartsInFocus from "./Components/ChartsInFocus";
 import Home from "./Components/Home";
 import LoginPage from "./Components/LoginPage";
 
@@ -128,7 +129,7 @@ function App() {
     Atr: atr,
     Mode: mode,
     hideLegend: legend,
-    ToolBar: toolbar, 
+    ToolBar: toolbar,
   };
 
   function handleChartDataChange(change) {
@@ -136,14 +137,14 @@ function App() {
     if (change == "macd") setMacd(!macd);
     if (change == "atr") setAtr(!atr);
     if (change == "legend") setLegend(!legend);
-    if (change == "mode" && mode=='dark') setMode("light");
-    if (change == "mode" && mode=='light') setMode("dark");
-    if(change=='toolbar') setToolBar(!toolbar);
+    if (change == "mode" && mode == "dark") setMode("light");
+    if (change == "mode" && mode == "light") setMode("dark");
+    if (change == "toolbar") setToolBar(!toolbar);
   }
 
-  function handleTimeFrameChnage(Time){
+  function handleTimeFrameChnage(Time) {
     setTimeFrame(Time);
-    console.log(timeFrame)
+    console.log(timeFrame);
   }
 
   return (
@@ -190,6 +191,17 @@ function App() {
               );
             })
           : null}
+        <Route
+          path="/ChartsInFocus"
+          element={
+            <ChartsInFocus
+              currencyName='Charts In Focus'
+              chartData={chartData}
+              handleChartDataChange={handleChartDataChange}
+              handleTimeFrameChnage={handleTimeFrameChnage}
+            />
+          }
+        />
         {/* <Route path="/AUD" element={<ChartBox currencyName="AUD" AllCharts={audArr} chartData={chartData} />} />
         <Route path="/CAD" element={<ChartBox currencyName="CAD" AllCharts={cadArr} chartData={chartData} />} />
         <Route path="/CHF" element={<ChartBox currencyName="CHF" AllCharts={chfArr} chartData={chartData} />} />

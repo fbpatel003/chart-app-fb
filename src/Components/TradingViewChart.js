@@ -12,7 +12,7 @@ function TradingViewChart(props) {
         width: "auto",
         height: "93%",
         symbol: curChartName,
-        interval: props.chartData.TimeFrame,
+        interval: props.chartData.TimeFrame=='3600'?'D':props.chartData.TimeFrame,
         timezone: "Asia/Kolkata",
         studies: [],
         details: true,

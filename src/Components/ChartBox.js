@@ -6,6 +6,28 @@ import Button from "@mui/material/Button";
 import Home from "./Home";
 
 function ChartBox(props) {
+  function addChartToFocus(pair) {
+    console.log(pair)
+    fetch("http://localhost:5000/addToFocus", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        chartPair: pair.el,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "added to focus");
+        if(data.status=="chartAdded") {
+          alert(pair.el + ' added to focus tab')
+        } else alert('Mr. stark i dont feel so good..!')
+      });
+  }
 
   return (
     <Box sx={{ flexGrow: 1 }} style={{ padding: "15px" }}>
@@ -54,10 +76,21 @@ function ChartBox(props) {
                     </div>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button style={{background:"grey", width:"90%"}} variant="contained">..to Focus</Button>
+                    <Button
+                      onClick={() => addChartToFocus({ el })}
+                      style={{ background: "grey", width: "90%" }}
+                      variant="contained"
+                    >
+                      ..to Focus
+                    </Button>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button style={{background:"grey", width:"90%"}} variant="contained">..Divergence</Button>
+                    <Button
+                      style={{ background: "grey", width: "90%" }}
+                      variant="contained"
+                    >
+                      ..Divergence
+                    </Button>
                   </Grid>
                 </Grid>
               </div>
@@ -65,9 +98,14 @@ function ChartBox(props) {
           );
         })}
       </Grid>
-      <Home currencyName={props.currencyName} chartData={props.chartData} handleChartDataChange={props.handleChartDataChange} handleTimeFrameChnage={props.handleTimeFrameChnage}/>
+      <Home
+        currencyName={props.currencyName}
+        chartData={props.chartData}
+        handleChartDataChange={props.handleChartDataChange}
+        handleTimeFrameChnage={props.handleTimeFrameChnage}
+      />
     </Box>
   );
 }
- 
+
 export default ChartBox;
