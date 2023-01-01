@@ -2,6 +2,7 @@ import { useState, useEffect, createContext } from "react";
 import { Route, Routes } from "react-router-dom";
 import ChartBox from "./Components/ChartBox";
 import ChartsInFocus from "./Components/ChartsInFocus";
+import DivergenceChart from "./Components/DivergenceChart";
 import Home from "./Components/Home";
 import LoginPage from "./Components/LoginPage";
 
@@ -98,6 +99,7 @@ function App() {
     if (MACD) setMacd(MACD);
     const TOOLBAR = JSON.parse(localStorage.getItem("ToolBarFxChart"));
     if (TOOLBAR) setMacd(TOOLBAR);
+    fetchdata();
   }, []);
 
   useEffect(() => {
@@ -122,6 +124,42 @@ function App() {
     localStorage.setItem("ToolBarFxChart", JSON.stringify(toolbar));
   }, [toolbar]);
 
+  const [curFocusChartDetails, setCurFocusChartDetails] = useState([]);
+  const [curDivergenceChartDetails, setcurDivergenceChartDetails] = useState(
+    []
+  );
+  async function fetchdata() {
+    await fetch("https://chart-api-fb.onrender.com/getFromFocus", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "get from focus");
+        setCurFocusChartDetails(data);
+      });
+
+    await fetch("https://chart-api-fb.onrender.com/getFromDivergence", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "get from divergence");
+        setcurDivergenceChartDetails(data);
+      });
+  }
+
   const chartData = {
     TimeFrame: timeFrame,
     Rsi: rsi,
@@ -140,11 +178,14 @@ function App() {
     if (change == "mode" && mode == "dark") setMode("light");
     if (change == "mode" && mode == "light") setMode("dark");
     if (change == "toolbar") setToolBar(!toolbar);
+
+    fetchdata();
   }
 
   function handleTimeFrameChnage(Time) {
     setTimeFrame(Time);
     console.log(timeFrame);
+    fetchdata();
   }
 
   return (
@@ -195,10 +236,25 @@ function App() {
           path="/ChartsInFocus"
           element={
             <ChartsInFocus
-              currencyName='Charts In Focus'
+              currencyName="Charts In Focus"
               chartData={chartData}
+              charts={curFocusChartDetails}
               handleChartDataChange={handleChartDataChange}
               handleTimeFrameChnage={handleTimeFrameChnage}
+              fetchdata = {fetchdata}
+            />
+          }
+        />
+        <Route
+          path="/Divergence Charts"
+          element={
+            <DivergenceChart
+              currencyName="Divergence Charts"
+              chartData={chartData}
+              charts={curDivergenceChartDetails}
+              handleChartDataChange={handleChartDataChange}
+              handleTimeFrameChnage={handleTimeFrameChnage}
+              fetchdata = {fetchdata}
             />
           }
         />

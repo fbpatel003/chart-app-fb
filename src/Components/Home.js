@@ -60,7 +60,7 @@ function Home(props) {
         onKeyDown={toggleDrawer(anchor, false)}
       >
         <List>
-          {["ChartsInFocus", "Divergence Chart"].map((text, index) => (
+          {["ChartsInFocus", "Divergence Charts"].map((text, index) => (
              <Link style={{color:'grey', textDecoration:'none'}} key={text} to={`/${text}`}>
             <ListItem key={text} disablePadding>
               <ListItemButton>
