@@ -5,7 +5,7 @@ function TradingViewChart(props) {
     const curChartId = props.chartName + new Date().getMinutes().toLocaleString();
     let curChartDetails = {
         width: "auto",
-        height: "93%",
+        height: "97%",
         symbol: curChartName,
         interval: props.chartData.TimeFrame=='3600'?'D':props.chartData.TimeFrame,
         timezone: "Asia/Kolkata",

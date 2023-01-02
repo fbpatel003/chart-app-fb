@@ -26,7 +26,7 @@ function ChartBox(props) {
         } else alert("Mr. stark i dont feel so good..!");
       });
 
-      props.fetchdata();
+    props.fetchdata();
   }
 
   function addToDivergence(pair) {
@@ -48,19 +48,19 @@ function ChartBox(props) {
           alert(pair.el + " added to focus tab");
         } else alert("Mr. stark i dont feel so good..!");
       });
-      props.fetchdata();
+    props.fetchdata();
   }
 
   return (
-    <Box sx={{ flexGrow: 1 }} style={{ padding: "15px" }}>
-      <Grid container spacing={2}>
+    <Box sx={{ flexGrow: 1 }} style={{ padding: "5px" }}>
+      <Grid container spacing={1}>
         {props.AllCharts
           ? props.AllCharts.map((el) => {
               return (
                 <Grid key={el} item xs={12} md={6}>
                   <div
                     style={{
-                      height: "47vh",
+                      height: "48vh",
                     }}
                   >
                     <TradingViewChart
@@ -69,73 +69,77 @@ function ChartBox(props) {
                       chartName={el}
                       chartData={props.chartData}
                     />
-                    <Grid
-                      style={{ marginTop: "-50px", paddingLeft: "20px" }}
-                      container
-                      direction="row"
-                      justifyContent="space-between"
-                      alignItems="flex-start"
-                      spacing={2}
+                    <div
+                      style={{ marginTop:'-37px'}}
                     >
-                      <Grid item xs={4}>
-                        <div
-                          style={{
-                            width: "80%",
-                            background:
-                              props.currencyName == el.substring(0, 3)
-                                ? "green"
-                                : "red",
-                            color: "white",
-                            padding: "7px",
-                            textAlign: "center",
-                            borderRadius: "10px",
-                            border: "1px solid black",
-                          }}
-                        >
-                          {el}
-                        </div>
-                      </Grid>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="flex-start"
+                        spacing={2}
+                      >
+                        <Grid item xs={4}>
+                          <div
+                            style={{
+                              width: "80%",
+                              background:
+                                props.currencyName == el.substring(0, 3)
+                                  ? "green"
+                                  : "red",
+                              color: "white",
+                              padding: "7px",
+                              textAlign: "center",
+                              borderRadius: "10px",
+                              border: "1px solid black",
+                            }}
+                          >
+                            {el}
+                          </div>
+                        </Grid>
 
-                      {props.currencyName != "Charts In Focus" &&
-                      props.currencyName != "Divergence Charts" ? (
-                        <>
-                          <Grid item xs={4}>
+                        {props.currencyName != "Charts In Focus" &&
+                        props.currencyName != "Divergence Charts" ? (
+                          <>
+                            <Grid item xs={4}>
+                              <Button
+                                onClick={() => addChartToFocus({ el })}
+                                style={{ background: "grey", width: "90%" }}
+                                variant="contained"
+                              >
+                                ..to Focus
+                              </Button>
+                            </Grid>
+                            <Grid item xs={4}>
+                              <Button
+                                onClick={() => addToDivergence({ el })}
+                                style={{ background: "grey", width: "90%" }}
+                                variant="contained"
+                              >
+                                ..Divergence
+                              </Button>
+                            </Grid>
+                          </>
+                        ) : (
+                          <Grid item xs={8}>
                             <Button
-                              onClick={() => addChartToFocus({ el })}
+                              onClick={() => props.RemoveFromChart({ el })}
                               style={{ background: "grey", width: "90%" }}
                               variant="contained"
                             >
-                              ..to Focus
+                              Remove
                             </Button>
                           </Grid>
-                          <Grid item xs={4}>
-                            <Button
-                              onClick={() => addToDivergence({ el })}
-                              style={{ background: "grey", width: "90%" }}
-                              variant="contained"
-                            >
-                              ..Divergence
-                            </Button>
-                          </Grid>
-                        </>
-                      ) : (
-                        <Grid item xs={8}>
-                        <Button
-                          onClick={() => props.RemoveFromChart({ el })}
-                          style={{ background: "grey", width: "90%" }}
-                          variant="contained"
-                        >
-                          Remove
-                        </Button>
+                        )}
                       </Grid>
-                      )}
-                    </Grid>
+                    </div>
                   </div>
-                </Grid>
+                </Grid>                
               );
             })
           : null}
       </Grid>
+      <div style={{height:'50px', width:'90%'}}></div>
       <Home
         currencyName={props.currencyName}
         chartData={props.chartData}
