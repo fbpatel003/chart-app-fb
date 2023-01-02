@@ -6,7 +6,6 @@ function ChartsInFocus(props) {
   });
 
   function RemoveFromChart(pair){
-    console.log(pair.el)
     fetch("https://chart-api-fb.onrender.com/removeFromFocus", {
       method: "POST",
       crossDomain: true,
@@ -21,7 +20,6 @@ function ChartsInFocus(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "deleted from focus");
         if (data.data == "deleted from focus") {
           alert(pair.el + " deleted from focus");
         } else alert("Mr. stark i dont feel so good..!");
@@ -39,6 +37,7 @@ function ChartsInFocus(props) {
         chartData={props.chartData}
         handleChartDataChange={props.handleChartDataChange}
         handleTimeFrameChnage={props.handleTimeFrameChnage}
+        fetchdata = {props.fetchdata}
       />
     </>
   );

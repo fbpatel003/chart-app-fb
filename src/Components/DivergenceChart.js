@@ -7,7 +7,6 @@ function DivergenceChart(props) {
   });
 
   function RemoveFromChart(pair){
-    console.log(pair.el)
     fetch("https://chart-api-fb.onrender.com/removeFromDivergence", {
       method: "POST",
       crossDomain: true,
@@ -22,12 +21,10 @@ function DivergenceChart(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "deleted from divergence");
         if (data.data == "deleted from divergence") {
           alert(pair.el + " deleted from divergence");
         } else alert("Mr. stark i dont feel so good..!");
       });
-
       props.fetchdata();
   }
 
@@ -40,6 +37,7 @@ function DivergenceChart(props) {
         handleChartDataChange={props.handleChartDataChange}
         handleTimeFrameChnage={props.handleTimeFrameChnage}
         RemoveFromChart = {RemoveFromChart}
+        fetchdata = {props.fetchdata}
       />
     </>
   );

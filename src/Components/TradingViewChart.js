@@ -1,13 +1,8 @@
 import React, { useEffect, useRef } from "react";
 
 function TradingViewChart(props) {
-
-
     const curChartName = "FX:" + props.chartName;
-
     const curChartId = props.chartName + new Date().getMinutes().toLocaleString();
-    console.log(curChartId);
-
     let curChartDetails = {
         width: "auto",
         height: "93%",
@@ -23,6 +18,7 @@ function TradingViewChart(props) {
         enable_publishing: false,
         allow_symbol_change: true,
         show_popup_button: true,
+        hide_top_toolbar : props.chartData.TopTool,
         hide_side_toolbar: props.chartData.ToolBar,
         popup_width: "1000",
         popup_height: "650",
@@ -32,7 +28,6 @@ function TradingViewChart(props) {
       if(props.chartData.hideLegend) curChartDetails.hide_legend=true;
       if(props.chartData.Rsi) curChartDetails.studies.push("RSI@tv-basicstudies");
       if(props.chartData.Macd) curChartDetails.studies.push("MACD@tv-basicstudies");
-      if(props.chartData.Atr) curChartDetails.studies.push("ATR@tv-basicstudies");
 
   let tvScriptLoadingPromise;
   const onLoadScriptRef = useRef();

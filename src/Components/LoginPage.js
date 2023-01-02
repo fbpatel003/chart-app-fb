@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import "./LoginPageStyle.css";
 import { useNavigate } from 'react-router-dom';
 
-
 function LoginPage(props) {
 
     const [LoginId, setLoginId] = useState("");
@@ -10,8 +9,6 @@ function LoginPage(props) {
     const [logedIn, setLoggedIn] = useState(false);
     const navigate = useNavigate();
     function handleLogin(){
-        console.log(LoginId+" "+ps);
-
         fetch("https://chart-api-fb.onrender.com/login",{
             method:"POST",
             crossDomain: true,
@@ -26,12 +23,11 @@ function LoginPage(props) {
             })
         }).then((res)=>res.json())
         .then((data)=>{
-            console.log(data,"userDone");
             if(data.status=="success") {
               setLoggedIn(true);
               props.handleLoginToApp(true);
               navigate('/Home');
-            }
+            } else alert('Invalid Username or Password!')
         })
     }
 

@@ -7,7 +7,6 @@ import Home from "./Home";
 
 function ChartBox(props) {
   function addChartToFocus(pair) {
-    console.log(pair);
     fetch("https://chart-api-fb.onrender.com/addToFocus", {
       method: "POST",
       crossDomain: true,
@@ -22,15 +21,15 @@ function ChartBox(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "added to focus");
         if (data.status == "chartAdded") {
           alert(pair.el + " added to focus tab");
         } else alert("Mr. stark i dont feel so good..!");
       });
+
+      props.fetchdata();
   }
 
   function addToDivergence(pair) {
-    console.log(pair);
     fetch("https://chart-api-fb.onrender.com/addToDivergence", {
       method: "POST",
       crossDomain: true,
@@ -45,11 +44,11 @@ function ChartBox(props) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "added to divergence");
         if (data.status == "chartDivergenceAdded") {
           alert(pair.el + " added to focus tab");
         } else alert("Mr. stark i dont feel so good..!");
       });
+      props.fetchdata();
   }
 
   return (
@@ -62,9 +61,6 @@ function ChartBox(props) {
                   <div
                     style={{
                       height: "47vh",
-                      // padding: "10px",
-                      // boxShadow:
-                      //   "rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px",
                     }}
                   >
                     <TradingViewChart
