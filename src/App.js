@@ -1,12 +1,22 @@
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect} from "react";
 import { Route, Routes } from "react-router-dom";
 import ChartBox from "./Components/ChartBox";
 import ChartsInFocus from "./Components/ChartsInFocus";
 import DivergenceChart from "./Components/DivergenceChart";
 import Home from "./Components/Home";
 import LoginPage from "./Components/LoginPage";
+// import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 
 function App() {
+
+  const THEME = createTheme({
+    typography: {
+     "fontFamily": 'Josefin Sans'
+    }
+ });
+
   const [LogIn, setLogin] = useState(false);
 
   function handleLogin(confirmed) {
@@ -80,7 +90,7 @@ function App() {
   const [legend, setLegend] = useState(false);
   const [mode, setMode] = useState("dark");
   const [rsi, setRsi] = useState(true);
-  const [atr, setAtr] = useState(true);
+  const [toptoolbar, setTopToolbar] = useState(true);
   const [macd, setMacd] = useState(false);
   const [toolbar, setToolBar] = useState(false);
 
@@ -93,8 +103,8 @@ function App() {
     if (MODE) setMode(MODE);
     const RSI = JSON.parse(localStorage.getItem("RsiFxChart"));
     if (RSI) setRsi(RSI);
-    const ATR = JSON.parse(localStorage.getItem("AtrFxChart"));
-    if (ATR) setAtr(ATR);
+    const TOPTOOL = JSON.parse(localStorage.getItem("TopToolBarFxChart"));
+    if (TOPTOOL) setTopToolbar(TOPTOOL);
     const MACD = JSON.parse(localStorage.getItem("MacdFxChart"));
     if (MACD) setMacd(MACD);
     const TOOLBAR = JSON.parse(localStorage.getItem("ToolBarFxChart"));
@@ -115,8 +125,8 @@ function App() {
     localStorage.setItem("RsiFxChart", JSON.stringify(rsi));
   }, [rsi]);
   useEffect(() => {
-    localStorage.setItem("AtrFxChart", JSON.stringify(atr));
-  }, [atr]);
+    localStorage.setItem("TopToolBarFxChart", JSON.stringify(toptoolbar));
+  }, [toptoolbar]);
   useEffect(() => {
     localStorage.setItem("MacdFxChart", JSON.stringify(macd));
   }, [macd]);
@@ -140,7 +150,6 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "get from focus");
         setCurFocusChartDetails(data);
       });
 
@@ -155,7 +164,6 @@ function App() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "get from divergence");
         setcurDivergenceChartDetails(data);
       });
   }
@@ -164,7 +172,7 @@ function App() {
     TimeFrame: timeFrame,
     Rsi: rsi,
     Macd: macd,
-    Atr: atr,
+    TopTool: toptoolbar,
     Mode: mode,
     hideLegend: legend,
     ToolBar: toolbar,
@@ -173,23 +181,23 @@ function App() {
   function handleChartDataChange(change) {
     if (change == "rsi") setRsi(!rsi);
     if (change == "macd") setMacd(!macd);
-    if (change == "atr") setAtr(!atr);
+    if (change == "toptoolbar") setTopToolbar(!toptoolbar);
     if (change == "legend") setLegend(!legend);
     if (change == "mode" && mode == "dark") setMode("light");
     if (change == "mode" && mode == "light") setMode("dark");
     if (change == "toolbar") setToolBar(!toolbar);
 
-    fetchdata();
+    // fetchdata();
   }
 
   function handleTimeFrameChnage(Time) {
     setTimeFrame(Time);
-    console.log(timeFrame);
-    fetchdata();
+    // fetchdata();
   }
 
   return (
     <>
+    <ThemeProvider theme={THEME}>
       <LoginPage handleLoginToApp={handleLogin} />
       <Routes>
         {LogIn ? <Route path="/" element={<Home />} /> : null}
@@ -226,6 +234,7 @@ function App() {
                       chartData={chartData}
                       handleChartDataChange={handleChartDataChange}
                       handleTimeFrameChnage={handleTimeFrameChnage}
+                      fetchdata = {fetchdata}
                     />
                   }
                 />
@@ -233,7 +242,7 @@ function App() {
             })
           : null}
         <Route
-          path="/ChartsInFocus"
+          path="/Charts In Focus"
           element={
             <ChartsInFocus
               currencyName="Charts In Focus"
@@ -258,14 +267,8 @@ function App() {
             />
           }
         />
-        {/* <Route path="/AUD" element={<ChartBox currencyName="AUD" AllCharts={audArr} chartData={chartData} />} />
-        <Route path="/CAD" element={<ChartBox currencyName="CAD" AllCharts={cadArr} chartData={chartData} />} />
-        <Route path="/CHF" element={<ChartBox currencyName="CHF" AllCharts={chfArr} chartData={chartData} />} />
-        <Route path="/GBP" element={<ChartBox currencyName="GBP" AllCharts={gbpArr} chartData={chartData} />} />
-        <Route path="/EUR" element={<ChartBox currencyName="EUR" AllCharts={eurArr} chartData={chartData} />} />
-        <Route path="/NZD" element={<ChartBox currencyName="NZD" AllCharts={nzdArr} chartData={chartData} />} />
-        <Route path="/JPY" element={<ChartBox currencyName="JPY" AllCharts={jpyArr} chartData={chartData} />} /> */}
       </Routes>
+      </ThemeProvider>
     </>
   );
 }
