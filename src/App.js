@@ -86,6 +86,15 @@ function App() {
     "GBPJPY",
     "CHFJPY",
   ];
+  const usdArr = [
+    "AUDUSD",
+    "USDCAD",
+    "EURUSD",
+    "NZDUSD",
+    "USDJPY",
+    "GBPUSD",
+    "USDCHF",
+  ]
   const [timeFrame, setTimeFrame] = useState(60);
   const [legend, setLegend] = useState(false);
   const [mode, setMode] = useState("dark");
@@ -222,6 +231,7 @@ function App() {
               { text: "GBP", Array: gbpArr },
               { text: "NZD", Array: nzdArr },
               { text: "JPY", Array: jpyArr },
+              { text: "USD", Array: usdArr },
             ].map((Obj, index) => {
               return (
                 <Route
