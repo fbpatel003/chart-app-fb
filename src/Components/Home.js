@@ -66,6 +66,21 @@ function Home(props) {
     </SvgIcon>
   );
 
+  const multiFrameIcon = (
+    <SvgIcon style={{color:'purple'}}>
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        id="Layer_1"
+        x="0"
+        y="0"
+        version="1.1"
+        viewBox="0 0 29 29"
+      >
+        <path d="M24 27.5H5c-1.654 0-3-1.346-3-3v-11c0-1.654 1.346-3 3-3h19c1.654 0 3 1.346 3 3v11c0 1.654-1.346 3-3 3zm-19-15c-.551 0-1 .449-1 1v11c0 .551.449 1 1 1h19c.551 0 1-.449 1-1v-11c0-.551-.449-1-1-1H5zM7 2.5h15a1 1 0 010 2H7a1 1 0 010-2zM5 6.5h19a1 1 0 010 2H5a1 1 0 010-2z" />
+      </svg>
+    </SvgIcon>
+  );
+
   const audIcon = (
     <SvgIcon>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -280,6 +295,7 @@ function Home(props) {
           {[
             { pair: "Charts In Focus", icon: FocusIcon },
             { pair: "Divergence Charts", icon: DivergenceIcon },
+            { pair: 'Multiple TFs', icon: multiFrameIcon },
           ].map((text, index) => (
             <Link
               style={{ color: "grey", textDecoration: "none" }}

@@ -2,12 +2,15 @@ import React, { useEffect, useRef } from "react";
 
 function TradingViewChart(props) {
     const curChartName = "FX:" + props.chartName;
-    const curChartId = props.chartName + new Date().getMinutes().toLocaleString();
+    let curChartId = props.chartName + new Date().getMinutes().toLocaleString();
+    if(props.multiChart) curChartId = curChartId + props.chartTf;
+    let inter = props.chartData.TimeFrame=='3600'?'D':props.chartData.TimeFrame;
+    if(props.multiChart) inter = props.chartTf;
     let curChartDetails = {
         width: "auto",
-        height: "97%",
+        height: props.multiChart ? '100%' : '97%',
         symbol: curChartName,
-        interval: props.chartData.TimeFrame=='3600'?'D':props.chartData.TimeFrame,
+        interval: inter,
         timezone: "Asia/Kolkata",
         studies: [],
         details: true,
