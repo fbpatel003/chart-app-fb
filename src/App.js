@@ -8,6 +8,7 @@ import LoginPage from "./Components/LoginPage";
 // import { MuiThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@emotion/react";
 import { createTheme } from "@mui/material";
+import MultiFrameCharts from "./Components/MultiFrameCharts";
 
 function App() {
 
@@ -274,6 +275,17 @@ function App() {
               handleChartDataChange={handleChartDataChange}
               handleTimeFrameChnage={handleTimeFrameChnage}
               fetchdata = {fetchdata}
+            />
+          }
+        />
+        <Route
+          path="/Multiple TFs"
+          element={
+            <MultiFrameCharts
+              currencyName="Multiple TimeFrame"
+              chartData={chartData}
+              handleChartDataChange={handleChartDataChange}
+              handleTimeFrameChnage={handleTimeFrameChnage}
             />
           }
         />
